@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreySense | Enterprise IoT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- Login Screen Overlay -->
+    <div id="login-screen" class="login-overlay">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                        <rect x="9" y="9" width="6" height="6"></rect>
+                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                        <line x1="20" y1="15" x2="23" y2="15"></line>
+                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                        <line x1="1" y1="15" x2="4" y2="15"></line>
+                    </svg>
+                    <span>GREY<span style="color: var(--accent);">SENSE</span></span>
+                </div>
+                <h2 style="margin-top: 1.5rem; font-size: 1.5rem; color: var(--text-main);">Login Page</h2>
+                <p style="color: var(--text-muted); font-size: 0.875rem;">Enterprise IoT Monitoring System</p>
+            </div>
+
+            <form id="login-form" autocomplete="off"
+                style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1.25rem;">
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
+                    <label
+                        style="font-size: 0.65rem; font-weight: 800; color: var(--accent); letter-spacing: 0.05em;">IDENTIFIER</label>
+                    <input type="text" id="username" placeholder="Username" required
+                        style="background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 12px; outline: none;">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; text-align: left;">
+                    <label
+                        style="font-size: 0.65rem; font-weight: 800; color: var(--accent); letter-spacing: 0.05em;">ACCESS
+                        CODE</label>
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <input type="password" id="password" placeholder="Password" required
+                            style="background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; padding-right: 2.5rem; border-radius: 12px; outline: none; width: 100%;">
+                        <button type="button" id="password-toggle" onclick="window.togglePasswordVisibility()"
+                            style="position: absolute; right: 0.75rem; background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0.25rem;">
+                            <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="login-error"
+                    style="color: var(--danger); font-size: 0.75rem; font-weight: 600; min-height: 1rem; text-align: center;">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">SECURE ACCESS</button>
+            </form>
+
+            <div style="margin-top: 2rem; font-size: 0.65rem; color: var(--text-muted); opacity: 0.5;">
+                SECURED BY GREY SENSE NEXUS • 2026
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Global Header -->
+    <header id="main-header" style="display: none;">
+        <div class="header-left">
+            <div class="header-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                    <rect x="9" y="9" width="6" height="6"></rect>
+                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                    <line x1="20" y1="15" x2="23" y2="15"></line>
+                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                    <line x1="1" y1="15" x2="4" y2="15"></line>
+                </svg>
+                GREY<span>SENSE</span>
+            </div>
+        </div>
+
+        <div class="header-center">
+            <div class="search-container">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="global-search" placeholder="Search system... (Ctrl + K)" autocomplete="off">
+                <div id="search-results" class="search-results-dropdown"></div>
+            </div>
+        </div>
+
+
+
+        <div class="header-right">
+            <nav class="top-nav">
+                <a class="nav-item active" data-section="home">Home</a>
+                <a class="nav-item" data-section="dashboard">Dashboard</a>
+                <a class="nav-item" data-section="about">About</a>
+                <a class="nav-item" data-section="help">Help</a>
+            </nav>
+            <div class="system-status" id="system-status-container">
+                <div class="status-dot"></div>
+                <span id="system-status-text">ONLINE</span>
+            </div>
+            <a class="nav-item" data-section="settings" title="Settings" style="padding: 0.5rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
+                    </path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="main-content" style="display: none;" class="content-wrapper">
+        <!-- Page Title Bar (Optional but nice for context) -->
+        <div class="breadcrumb-bar">
+            <h2 id="current-page-title">Home</h2>
+        </div>
+
+        <!-- Home Section -->
+        <section id="home" class="active">
+            <div class="hero-content">
+                <h1>The Future of Environmental Intelligence.</h1>
+                <p style="color: var(--text-muted); font-size: 1.25rem; line-height: 1.6; margin-bottom: 2rem;">
+                    GreySense is an advanced AWS-enabled IoT ecosystem providing real-time multi-sensor monitoring
+                    and intuitive gesture-based actuation.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button onclick="switchSection('dashboard')" class="btn btn-secondary">Launch Dashboard</button>
+                    <button onclick="switchSection('about')" class="btn btn-secondary">Learn More</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard">
+            <div id="system-alert-message"
+                style="display: none; padding: 1rem; margin-bottom: 1.5rem; border-radius: 1rem; font-weight: 600; text-align: center;">
+            </div>
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-label">Temperature</div>
+                    <div class="card-value" id="temp-val">24.5°C</div>
+                    <div class="card-subtext">Stable Operations</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Humidity</div>
+                    <div class="card-value" id="hum-val">48%</div>
+                    <div class="card-subtext">Optimal Environment</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Air Quality</div>
+                    <div class="card-value" id="aq-val">120 PPM</div>
+                    <div class="card-subtext" style="color: var(--success)">Excellent</div>
+                </div>
+                <div class="card"
+                    style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(15, 23, 42, 0.4) 100%);">
+                    <div class="card-label">Present Members</div>
+                    <div class="card-value" id="present-val">0</div>
+                    <div class="card-subtext" id="occupancy-status">Area Empty</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Total Entered</div>
+                    <div class="card-value" id="total-entered-val" style="color: var(--success)">0</div>
+                    <div class="card-subtext">PIR Lifetime Count</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Total Left</div>
+                    <div class="card-value" id="total-left-val" style="color: var(--danger)">0</div>
+                    <div class="card-subtext">Verified Exits</div>
+                </div>
+
+                <div class="card"
+                    style="grid-column: span 1; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px dashed var(--border-color);">
+                    <div id="pir-indicator"
+                        style="width: 12px; height: 12px; border-radius: 50%; background: #94a3b8; margin-bottom: 0.5rem; transition: background 0.2s;">
+                    </div>
+                    <div
+                        style="font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+                        PIR Sensor State</div>
+                    <div id="pir-text" style="font-size: 0.75rem; font-weight: 600; margin-top: 0.25rem;">NO MOTION
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-label">Noise Level</div>
+                    <div class="card-value" id="sound-val">0 dB</div>
+                    <div class="card-subtext">Acoustic Monitoring</div>
+                </div>
+                <!-- New Raw Mic Card -->
+                <div class="card">
+                    <div class="card-label">Raw Mic Amp</div>
+                    <div class="card-value" id="mic-raw-val">0</div>
+                    <div class="card-subtext">Sensor Activity</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">System Vibration</div>
+                    <div class="card-value" id="vibration-val">0.00 g</div>
+                    <div class="card-subtext">Structural Health</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Ambient Light</div>
+                    <div class="card-value" id="light-val">850 LUX</div>
+                    <div class="card-subtext">Daylight Mode</div>
+                </div>
+
+                <div class="card card-wide" style="height: 350px;">
+                    <div class="card-label">Environmental Analytics (24h)</div>
+                    <canvas id="mainChart"></canvas>
+                </div>
+
+                <div class="card card-wide" style="height: 350px; display: flex; flex-direction: column;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <div class="card-label" style="margin-bottom: 0;">System Activity Logs</div>
+                        <div
+                            style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.65rem; font-weight: 700; color: var(--accent); letter-spacing: 0.05em;">
+                            <div
+                                style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); animation: pulse 2s infinite;">
+                            </div>
+                            LIVE FEED
+                        </div>
+                    </div>
+                    <div id="event-logs"
+                        style="flex: 1; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.8125rem; background: rgba(0,0,0,0.3); border-radius: 1rem; padding: 0.5rem; border: 1px solid var(--border-color);">
+                        <div style="text-align: center; padding: 2rem; color: var(--text-muted); opacity: 0.5;">
+                            Establishing secure telemetry link...
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card" style="grid-column: span 1;">
+                    <div class="card-label">Actuator Control</div>
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <!-- Light Control -->
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div id="light-indicator" class="light-icon"
+                                        style="width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #475569; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); transition: all 0.3s ease;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path
+                                                d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .5 2.2 1.5 3.1.7.8 1.3 1.5 1.5 2.5" />
+                                            <path d="M9 18h6" />
+                                            <path d="M10 22h4" />
+                                        </svg>
+                                    </div>
+                                    <span style="font-weight: 500;">Smart Light</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="light-toggle" onchange="toggleDevice('light')">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
+                            <!-- Light Settings Container -->
+                            <div id="light-settings"
+                                style="display: none; padding-top: 0.5rem; animation: fadeIn 0.3s ease; flex-direction: column; gap: 0.5rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span
+                                        style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">BRIGHTNESS</span>
+                                    <span id="brightness-val"
+                                        style="font-size: 0.75rem; color: var(--accent); font-weight: 700;">80%</span>
+                                </div>
+                                <div class="knob-container">
+                                    <div class="knob-outer" id="brightness-knob">
+                                        <div class="knob-inner">
+                                            <div class="knob-pointer"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">LIGHT
+                                        COLOR</span>
+                                    <input type="color" id="light-color-picker" value="#fbbf24"
+                                        style="border: none; width: 36px; height: 20px; padding: 0; background: transparent; cursor: pointer;"
+                                        oninput="updateLightColor(this.value)">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fan Control -->
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div id="fan-indicator" class="fan-icon"
+                                        style="width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); transition: all 0.3s ease;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M12 12c.5-4.5 2.5-4.5 3 0 .5 4.5-2.5 4.5-3 0Z" fill="currentColor"
+                                                fill-opacity="0.2" />
+                                            <path d="M12 12c4.5 .5 4.5 2.5 0 3-4.5 .5-4.5-2.5 0-3Z" fill="currentColor"
+                                                fill-opacity="0.2" />
+                                            <path d="M12 12c-.5 4.5-2.5 4.5-3 0-.5-4.5 2.5-4.5 3 0Z" fill="currentColor"
+                                                fill-opacity="0.2" />
+                                            <path d="M12 12c-4.5-.5-4.5-2.5 0-3 4.5-.5 4.5 2.5 0 3Z" fill="currentColor"
+                                                fill-opacity="0.2" />
+                                            <circle cx="12" cy="12" r="2" fill="currentColor" />
+                                        </svg>
+                                    </div>
+                                    <span style="font-weight: 500;">Cooling Fan</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="fan-toggle" onchange="toggleDevice('fan')">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
+                            <div id="fan-settings"
+                                style="display: none; flex-direction: column; gap: 0.5rem; animation: fadeIn 0.3s ease;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span
+                                        style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">SPEED</span>
+                                    <span id="fan-speed-val"
+                                        style="font-size: 0.75rem; color: var(--accent); font-weight: 700;">50%</span>
+                                </div>
+                                <div class="knob-container">
+                                    <div class="knob-outer" id="fan-knob">
+                                        <div class="knob-ticks">
+                                            <div class="tick" style="--i:0">
+                                                <div class="dot"></div><span>0</span>
+                                            </div>
+                                            <div class="tick" style="--i:1">
+                                                <div class="dot"></div><span>1</span>
+                                            </div>
+                                            <div class="tick" style="--i:2">
+                                                <div class="dot"></div><span>2</span>
+                                            </div>
+                                            <div class="tick" style="--i:3">
+                                                <div class="dot"></div><span>3</span>
+                                            </div>
+                                            <div class="tick" style="--i:4">
+                                                <div class="dot"></div><span>4</span>
+                                            </div>
+                                            <div class="tick" style="--i:5">
+                                                <div class="dot"></div><span>5</span>
+                                            </div>
+                                        </div>
+                                        <div class="knob-inner">
+                                            <div class="knob-pointer"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <div style="max-width: 1000px; margin: 0 auto;">
+                <h2 style="margin-bottom: 2rem; text-align: center;">Project Intelligence & Architecture</h2>
+
+                <!-- Project Overview -->
+                <div class="card" style="margin-bottom: 1.5rem; border-left: 4px solid var(--accent);">
+                    <h3
+                        style="color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                        </svg>
+                        Project Overview
+                    </h3>
+                    <p style="color: var(--text-muted); line-height: 1.7; font-size: 1.05rem;">
+                        <strong>GreySense Nexus</strong> is a state-of-the-art enterprise IoT ecosystem designed for
+                        hyper-accurate environmental monitoring and intelligent automation. By fusing advanced hardware
+                        sensing with high-performance cloud orchestration, it provides a seamless bridge between
+                        physical environments and digital intelligence.
+                    </p>
+                </div>
+
+                <div class="about-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 1.5rem;">
+                    <!-- Our Mission -->
+                    <div class="card">
+                        <h4 style="margin-bottom: 1.25rem; color: var(--text-main); font-size: 1.15rem;">Our Mission
+                        </h4>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+                            To empower industrial and residential spaces with <strong>ultra-low latency</strong>
+                            environmental insights. We focus on delivering a "Control Room" experience that combines
+                            real-time data visualization with intuitive, gesture-driven machine control.
+                        </p>
+                    </div>
+
+                    <!-- Coding Architecture -->
+                    <div class="card">
+                        <h4 style="margin-bottom: 1.25rem; color: var(--text-main); font-size: 1.15rem;">Coding Stack
+                        </h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.875rem;">
+                            <div
+                                style="background: var(--bg-primary); padding: 0.75rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                                <div style="color: var(--accent); font-weight: 700; margin-bottom: 0.25rem;">BACKEND
+                                </div>
+                                <div style="color: var(--text-main);">Java Spring Boot</div>
+                            </div>
+                            <div
+                                style="background: var(--bg-primary); padding: 0.75rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                                <div style="color: var(--accent); font-weight: 700; margin-bottom: 0.25rem;">FRONTEND
+                                </div>
+                                <div style="color: var(--text-main);">Vanilla JS / CSS3</div>
+                            </div>
+                            <div
+                                style="background: var(--bg-primary); padding: 0.75rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                                <div style="color: var(--accent); font-weight: 700; margin-bottom: 0.25rem;">VISUALS
+                                </div>
+                                <div style="color: var(--text-main);">Chart.js Engine</div>
+                            </div>
+                            <div
+                                style="background: var(--bg-primary); padding: 0.75rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                                <div style="color: var(--accent); font-weight: 700; margin-bottom: 0.25rem;">NETWORK
+                                </div>
+                                <div style="color: var(--text-main);">AJAX & Fetch API</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hardware Core -->
+                    <div class="card">
+                        <h4 style="margin-bottom: 1.25rem; color: var(--text-main); font-size: 1.15rem;">Hardware
+                            Implementation</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+                            Powered by the <strong>ESP32 Microcontroller</strong> for robust processing and dual-mode
+                            connectivity.
+                        </p>
+                        <ul
+                            style="color: var(--text-muted); font-size: 0.85rem; padding-left: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <li>DHT11 Temperature</li>
+                            <li>MQ-135 Gas Sensor</li>
+                            <li>PIR Motion Tracking</li>
+                            <li>APDS-9960 Gestures</li>
+                        </ul>
+                    </div>
+
+                    <!-- Cloud Architecture -->
+                    <div class="card">
+                        <h4 style="margin-bottom: 1.25rem; color: var(--text-main); font-size: 1.15rem;">Future Roadmap
+                        </h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+                            Our vision includes scaling towards <strong>multi-node mesh networking</strong>, integrated
+                            <strong>AI-driven predictive maintenance</strong>, and advanced energy optimization
+                            algorithms for sustainable smart infrastructure.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="help">
+            <div style="max-width: 600px; margin: 0 auto;">
+                <h2 style="margin-bottom: 2rem; text-align: center;">Help & Support</h2>
+
+                <!-- Troubleshooting Guide -->
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <h3
+                        style="color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m21 16-4 4-4-4" />
+                            <path d="M17 20V4" />
+                            <path d="m3 8 4-4 4 4" />
+                            <path d="M7 4v16" />
+                        </svg>
+                        Troubleshooting Guide
+                    </h3>
+                    <div
+                        style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+                        <div style="border-left: 2px solid var(--accent); padding-left: 1rem;">
+                            <strong style="color: var(--text-main); display: block; margin-bottom: 0.25rem;">Connection
+                                Lost?</strong>
+                            Ensure your ESP32 is powered via USB and connected to the 'GreySense-Net' WiFi. Check the
+                            status indicator in the header.
+                        </div>
+                        <div style="border-left: 2px solid var(--accent); padding-left: 1rem;">
+                            <strong style="color: var(--text-main); display: block; margin-bottom: 0.25rem;">Actuators
+                                Unresponsive?</strong>
+                            Toggle the master power switch in the Actuator Control card. If issues persist, refresh your
+                            browser or check server logs.
+                        </div>
+                        <div style="border-left: 2px solid var(--accent); padding-left: 1rem;">
+                            <strong style="color: var(--text-main); display: block; margin-bottom: 0.25rem;">Sensor Data
+                                Lagging?</strong>
+                            Check the 'Data Polling Rate' in Settings. High latency may be due to network congestion or
+                            server load.
+                        </div>
+                        <button onclick="runDiagnostic()" class="btn btn-secondary"
+                            style="width: 100%; margin-top: 0.5rem; justify-content: center; font-size: 0.75rem; padding: 0.6rem;">
+                            Run System Diagnostic
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 1.5rem; text-align: center;">
+                    <h3 style="color: var(--accent); margin-bottom: 0.5rem;">Grey Sense</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-muted);">
+                        <a href="mailto:greysensehelp@gmail.com"
+                            style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: var(--text-muted); text-decoration: none; transition: all 0.2s;"
+                            onmouseover="this.style.color='var(--accent)'"
+                            onmouseout="this.style.color='var(--text-muted)'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                                <rect width="20" height="16" x="2" y="4" rx="2" />
+                            </svg>
+                            <span>greysensehelp@gmail.com</span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="card">
+                    <form id="help-form" action="https://formspree.io/greysensehelp@gmail.com" method="POST"
+                        style="display: flex; flex-direction: column; gap: 1rem;">
+                        <input type="text" name="name" placeholder="Full Name" required
+                            style="background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 14px;">
+                        <input type="email" name="email" placeholder="Email Address" required
+                            style="background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 14px;">
+                        <textarea name="message" placeholder="Technical issue or inquiry..." rows="5" required
+                            style="background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.75rem; border-radius: 14px;"></textarea>
+                        <button type="submit" id="help-submit" class="btn btn-primary" style="width: 100%;">Dispatch
+                            Ticket</button>
+                    </form>
+                    <div id="form-status"
+                        style="margin-top: 1rem; text-align: center; display: none; color: var(--accent); font-weight: 600; font-size: 0.8125rem;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings">
+            <div style="max-width: 800px; margin: 0 auto;">
+                <h2 style="margin-bottom: 2rem;">System Configuration</h2>
+                <div class="card">
+                    <!-- Theme Configuration -->
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color);">
+                        <div>
+                            <div style="font-weight: 600;">Interface Theme</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">Switch between light and dark
+                                display modes</div>
+                        </div>
+                        <select id="theme-select" onchange="window.setTheme(this.value)"
+                            style="background: var(--bg-secondary); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem 1.25rem; border-radius: 99px; cursor: pointer; outline: none;">
+                            <option value="dark">Dark Mode</option>
+                            <option value="light">Light Mode</option>
+                            <option value="warm">Warm Mode</option>
+                        </select>
+                    </div>
+
+                    <!-- Color Customization -->
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color);">
+                        <div>
+                            <div style="font-weight: 600;">Accent Color</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">Customize the primary brand color
+                                of the interface</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <input type="color" id="accent-color-picker" oninput="window.updateAccentColor(this.value)"
+                                style="border: none; width: 32px; height: 32px; padding: 0; background: transparent; cursor: pointer; border-radius: 50%;">
+                            <button onclick="window.resetAccentColor()" class="btn btn-reset">Reset</button>
+                        </div>
+                    </div>
+
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border-color);">
+                        <div>
+                            <div style="font-weight: 600;">Data Polling Rate</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">Set frequency of ESP32 sensor
+                                updates</div>
+                        </div>
+                        <select
+                            style="background: var(--bg-primary); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem 1.25rem; border-radius: 99px; outline: none; cursor: pointer;">
+                            <option>1000ms</option>
+                            <option>5000ms</option>
+                            <option>10000ms</option>
+                        </select>
+                    </div>
+
+                    <!-- System Security -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+                        <div>
+                            <div style="font-weight: 600;">System Security</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">Securely end your current session
+                            </div>
+                        </div>
+                        <button onclick="window.logout()" class="btn btn-reset"
+                            style="border-color: var(--danger); color: var(--danger);">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Global Footer -->
+    <footer>
+        <div class="footer-content">
+            &copy; 2026 Grey Sense. All rights reserved. Powered by <a href="https://hexhive.solutions/" target="_blank"
+                style="color: var(--accent); text-decoration: none; font-weight: 600; cursor: pointer;">hexhive.solutions</a>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
