@@ -1,9 +1,0 @@
-{
-    "airPpm": 120,
-    "noiseDb": 45,
-    "distanceCm": 150.5,
-    "peoplePresent": 2,
-    "pirMotion": true,
-    "severity": "LOW",
-    "message": "Normal operation"
-}
